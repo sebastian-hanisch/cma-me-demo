@@ -30,6 +30,21 @@ def test_live_pair_runs_map_elites_and_the_chosen_method_from_the_same_start():
     assert me.coverage[0] == cm.coverage[0] and me.qd_score[0] == cm.qd_score[0]
 
 
+def test_the_live_run_limits_the_blas_threads_to_one_while_it_computes(monkeypatch):
+    """Auf geteilten Rechnern bremsen viele BLAS-Threads die Eigenzerlegung der Emitter stark: der Live-Lauf rechnet mit einem Thread."""
+    from threadpoolctl import threadpool_info
+    seen = []
+    real = S.run_search
+
+    def spy(*args, **kwargs):
+        seen.append([lib["num_threads"] for lib in threadpool_info() if lib.get("user_api") == "blas"])
+        return real(*args, **kwargs)
+
+    monkeypatch.setattr(S, "run_search", spy)
+    E.live_run(0, 3, 1, "mae10", 10, 0.2)
+    assert seen and all(n == 1 for libs in seen for n in libs)
+
+
 def test_success_helpers_by_hand():
     runs = [100, None, 500, 50, None]
     assert E.success_count(runs) == 3 and E.success_count(runs, 100) == 2 and E.median_solved(runs) == 100.0 and E.median_solved([None, None]) is None

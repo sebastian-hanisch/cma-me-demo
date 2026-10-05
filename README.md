@@ -129,7 +129,7 @@ Jede dieser Annahmen hebt ein Folgestück der Linie auf:
 
 ## Tests
 
-234 Tests, rund eine Minute: Labyrinth und Roboter (aus Stück 1, Genomlänge unabhängig von der globalen Konstanten), das CMA-ES (Update von Hand und skalar, gegen pycma, Konvergenz auf Kugel und Ellipsoid, Neustart, Konditionszahl, Abbruchkriterium), Archiv und Emitter-Regeln von Hand,
+235 Tests, rund eine Minute: Labyrinth und Roboter (aus Stück 1, Genomlänge unabhängig von der globalen Konstanten), das CMA-ES (Update von Hand und skalar, gegen pycma, Konvergenz auf Kugel und Ellipsoid, Neustart, Konditionszahl, Abbruchkriterium), Archiv und Emitter-Regeln von Hand,
 Suche (Reproduzierbarkeit je Verfahren, Kurven, Archiv in sich stimmig, Konditionszahlen zu den Meilensteinen, wer das Ziel sieht), **Orakel** (Direktheit skalar, alle fünf Verfahren als Ganzes gegen eine Wörterbuch-Buchführung, Restweg gegen SciPy), Auswertung und Vollständigkeit der
 vorgerechneten Datei (inklusive Neurechnung einzelner Läufe), Presets und Permalink, Diagramme (gesperrte Achsen, Fehlerbalken), AppTest-Rauchtests mit festem Würfel-Seed, der Smoke-Test der Portfolio-Vorlage, ein Quelltext-Test gegen Satz-Komma-Fehler und `test_claims.py` für jede Zahl dieser README.
 

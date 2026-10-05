@@ -2,6 +2,7 @@
 Die Studie (Dimensions-Sweep im freien Feld, Labyrinth bei nativer Dimension, Sweep der Anfangsschrittweite) wird beim Bau gerechnet (`generate_precomputed.py`) und hier nur gelesen."""
 
 import json
+from contextlib import nullcontext
 from functools import lru_cache
 from pathlib import Path
 
@@ -12,6 +13,12 @@ import cme_constants as C
 import cme_maze as M
 import cme_robot as R
 import cme_search as S
+
+try:
+    from threadpoolctl import threadpool_limits
+except ImportError:                                  # ohne threadpoolctl läuft alles weiter, nur ohne Begrenzung der BLAS-Threads
+    def threadpool_limits(*args, **kwargs):
+        return nullcontext()
 
 PRECOMPUTED_PATH = Path(__file__).resolve().parent / "precomputed_sweep.json"
 
@@ -35,7 +42,8 @@ def solvability(level):
 def live_run(level, gens, seed, method, steps, sigma):
     """Ein Lauf mit dem Verfahren `method`; das Ergebnisarchiv wird gespeichert und seine Fahrten werden neu gerechnet. Gibt (Lauf, Qualität je Elite, Fahrten, Zellen) zurück."""
     g = M.make_maze(level)
-    res = S.run_search(g, seed, method, steps=steps, sigma0=sigma, gens=gens, keep_archive=True)
+    with threadpool_limits(limits=1, user_api="blas"):          # die Matrizen der Emitter sind klein; viele BLAS-Threads bremsen auf geteilten Rechnern (Streamlit Cloud) die Eigenzerlegung um ein Vielfaches
+        res = S.run_search(g, seed, method, steps=steps, sigma0=sigma, gens=gens, keep_archive=True)
     q, tracks, cells = S.elite_tracks(g, res)
     return res, q, tracks, cells
 
