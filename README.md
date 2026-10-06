@@ -1,5 +1,7 @@
 # CMA-ME und CMA-MAE – wann lohnt es sich, die Suchverteilung zu lernen? (Streamlit-Demo)
 
+**[→ Demo live ausprobieren](https://sebastianhanisch-cma-me-demo.streamlit.app/)**
+
 ---
 
 Interaktive Demo zu **CMA-ME und CMA-MAE**. **Sechstes Stück der Konzepte-Linie „Novelty Search und Quality-Diversity“** im Portfolio von
